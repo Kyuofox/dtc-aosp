@@ -12,4 +12,9 @@ cc_fuzz {
         "libfdt",
     ],
     host_supported: true,
+    fuzz_config: {
+        cc: [
+            "ptosi@google.com",
+        ],
+    },
 }
