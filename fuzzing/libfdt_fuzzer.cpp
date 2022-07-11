@@ -33,7 +33,7 @@ extern "C" int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size) {
   // Non-zero return values are reserved for future use.
   if (size < FDT_V17_SIZE) return 0;
 
-  if (fdt_check_header(data) != 0) return 0;
+  if (fdt_check_full(data, size) != 0) return 0;
 
   int root_node_offset = 0;
   walk_device_tree(data, root_node_offset);
