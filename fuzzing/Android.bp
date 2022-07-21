@@ -11,10 +11,11 @@ cc_fuzz {
     static_libs: [
         "libfdt",
     ],
-    host_supported: true,
+    corpus: ["corpus/*"],
     fuzz_config: {
         cc: [
             "ptosi@google.com",
         ],
     },
+    host_supported: true,
 }
