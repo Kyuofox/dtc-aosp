@@ -6,7 +6,7 @@ package {
 cc_fuzz {
     name: "libfdt_fuzzer",
     srcs: [
-        "libfdt_fuzzer.cpp",
+        "libfdt_fuzzer.c",
     ],
     static_libs: [
         "libfdt",
