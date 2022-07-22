@@ -9,6 +9,7 @@
 lex.yy.c
 *.lex.c
 .*.swp
+dtc-parser.h
 /dtc
 /fdtdump
 /convert-dtsv0
