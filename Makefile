@@ -381,4 +381,8 @@ clean: libfdt_clean pylibfdt_clean tests_clean
 	@$(VECHO) BISON $@
 	$(BISON) -b $(basename $(basename $@)) -d $<
 
+# Some checks expect dtc-parser.h, so create link
+dtc-parser.h: dtc-parser.tab.h
+	ln -s $^ $@
+
 FORCE:
