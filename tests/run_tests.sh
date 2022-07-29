@@ -195,7 +195,7 @@ asm_to_so_test () {
 run_fdtget_test () {
     expect="$1"
     shift
-    printf "fdtget-runtest.sh %s $*:	" "$(echo $expect)"
+    printf "fdtget-runtest.sh \"%s\" $*:	" "$expect"
     base_run_test sh "$SRCDIR/fdtget-runtest.sh" "$expect" "$@"
 }
 
@@ -607,11 +607,15 @@ dtc_tests () {
 	run_dtc_test -I dts -O asm -o oasm_$tree.test.s "$SRCDIR/$tree"
 	asm_to_so_test oasm_$tree
 	run_dtc_test -I dts -O dtb -o $tree.test.dtb "$SRCDIR/$tree"
-	run_test asm_tree_dump ./oasm_$tree.test.so oasm_$tree.test.dtb
-	run_wrap_test cmp oasm_$tree.test.dtb $tree.test.dtb
+	if [ -x ./asm_tree_dump ]; then
+	    run_test asm_tree_dump ./oasm_$tree.test.so oasm_$tree.test.dtb
+	    run_wrap_test cmp oasm_$tree.test.dtb $tree.test.dtb
+	fi
     done
 
-    run_test value-labels ./oasm_value-labels.dts.test.so
+    if [ -x ./value-labels ]; then
+	run_test value-labels ./oasm_value-labels.dts.test.so
+    fi
 
     # Check -Odts mode preserve all dtb information
     for tree in test_tree1.dtb dtc_tree1.test.dtb dtc_escapes.test.dtb \
@@ -862,7 +866,7 @@ fdtget_tests () {
     run_fdtget_test "61 62 63 0" -tbx $dtb /randomnode tricky1
     run_fdtget_test "a b c d de ea ad be ef" -tbx $dtb /randomnode blob
     run_fdtget_test "MyBoardName\0MyBoardFamilyName\0" -tr $dtb / compatible
-    run_fdtget_test "\x0a\x0b\x0c\x0d\xde\xea\xad\xbe\xef" -tr $dtb /randomnode blob
+    run_fdtget_test "\012\013\014\015\336\352\255\276\357" -tr $dtb /randomnode blob
 
     # Here the property size is not a multiple of 4 bytes, so it should fail
     run_wrap_error_test $DTGET -tlx $dtb /randomnode mixed
