@@ -29,7 +29,7 @@ void walk_device_tree(const void *device_tree, int parent_node) {
 
 // Information on device tree is available in external/dtc/Documentation/
 // folder.
-extern "C" int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size) {
+int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size) {
   // Non-zero return values are reserved for future use.
   if (size < FDT_V17_SIZE) return 0;
 
