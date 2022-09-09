@@ -55,6 +55,9 @@ static void check_mem(const void *mem, size_t len) {
 #endif
 }
 
+static bool phandle_is_valid(uint32_t phandle) {
+  return phandle != 0 && phandle != UINT32_MAX;
+}
 
 static void walk_device_tree(const void *device_tree, int parent_node) {
   int len = 0;
@@ -64,8 +67,9 @@ static void walk_device_tree(const void *device_tree, int parent_node) {
   }
 
   uint32_t phandle = fdt_get_phandle(device_tree, parent_node);
-  if (phandle != 0) {
-    assert(parent_node == fdt_node_offset_by_phandle(device_tree, phandle));
+  if (phandle_is_valid(phandle)) {
+    int node = fdt_node_offset_by_phandle(device_tree, phandle);
+    assert(node >= 0); // it should at least find parent_node
   }
 
   // recursively walk the node's children
